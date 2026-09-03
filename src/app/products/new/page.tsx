@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import { ImageUploader } from '@/components/ImageUploader';
 
 interface FeatureHighlight {
   title: string;
@@ -490,24 +491,21 @@ export default function NewProductAdminPage() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-zinc-300">
-                    Infographic Photo URL
-                  </label>
-                  <input
-                    type="url"
-                    placeholder="https://images.unsplash.com/..."
+                <div className="sm:col-span-2">
+                  <ImageUploader
+                    label="Infographic Photo"
                     value={fImg.url}
-                    onChange={(e) => {
+                    folder="fittrock/products"
+                    placeholder="https://images.unsplash.com/... or upload image"
+                    onChange={(newUrl) => {
                       const u = [...featureImages];
-                      u[fIdx].url = e.target.value;
+                      u[fIdx].url = newUrl;
                       setFeatureImages(u);
                     }}
-                    className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-500"
                   />
                 </div>
 
-                <div className="space-y-1.5">
+                <div className="space-y-1.5 sm:col-span-2">
                   <label className="text-xs font-semibold text-zinc-300">
                     Card Title
                   </label>

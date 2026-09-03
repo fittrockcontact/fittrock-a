@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingBag, Calendar, User, CreditCard } from 'lucide-react';
+import { ShoppingBag, Calendar, User, CreditCard, FileText } from 'lucide-react';
 import { apiFetch } from '@/lib/api-client';
 import { formatPrice, formatDate } from '@/lib/utils';
 import { OrderStatusDropdown } from './OrderStatusDropdown';
@@ -28,6 +28,13 @@ interface OrderItem {
     productTitle?: string;
     quantity: number;
     unit_price?: string;
+  }>;
+  shipments?: Array<{
+    id?: string;
+    carrier_name?: string;
+    tracking_number?: string;
+    tracking_url?: string;
+    status?: string;
   }>;
 }
 
@@ -128,10 +135,22 @@ export default async function AdminOrdersPage() {
                       </td>
 
                       <td className="py-4 px-4">
-                        <OrderStatusDropdown
-                          orderId={ord.id}
-                          initialStatus={ord.status}
-                        />
+                        <div className="flex items-center gap-2">
+                          <OrderStatusDropdown
+                            orderId={ord.id}
+                            initialStatus={ord.status}
+                            existingShipment={ord.shipments?.[0]}
+                          />
+                          <a
+                            href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/checkout/orders/${ord.order_number || ord.id}/invoice`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-amber-400 hover:bg-zinc-700 transition-colors"
+                            title="Download Official Tax Invoice (PDF)"
+                          >
+                            <FileText className="w-3.5 h-3.5" />
+                          </a>
+                        </div>
                       </td>
                     </tr>
                   );

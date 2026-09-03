@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ExternalLink, Trash2, Loader2 } from 'lucide-react';
+import Link from 'next/link';
+import { ExternalLink, Trash2, Loader2, Edit } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -41,6 +42,14 @@ export function ProductTableActions({ productId, slug, storeUrl }: ProductTableA
 
   return (
     <div className="inline-flex items-center gap-2 justify-end">
+      <Link
+        href={`/products/${productId}/edit`}
+        className="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-amber-400 hover:bg-zinc-700 transition-colors"
+        title="Edit Product & Variants"
+      >
+        <Edit className="w-3.5 h-3.5" />
+      </Link>
+
       <a
         href={`${storeUrl}/products/${slug}`}
         target="_blank"

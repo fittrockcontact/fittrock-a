@@ -13,13 +13,17 @@ import {
   ExternalLink,
   Sliders,
   ShieldCheck,
+  Boxes,
+  Tag,
 } from 'lucide-react';
 
 const navItems = [
   { href: '/', label: 'Overview', icon: LayoutDashboard },
   { href: '/products', label: 'Products', icon: Package },
+  { href: '/inventory', label: 'Inventory & Stock', icon: Boxes },
+  { href: '/discounts', label: 'Discounts & Coupons', icon: Tag },
   { href: '/products/new', label: 'Add Product', icon: PlusCircle },
-  { href: '/orders', label: 'Orders', icon: ShoppingBag },
+  { href: '/orders', label: 'Orders & Shipments', icon: ShoppingBag },
   { href: '/reviews', label: 'Reviews & Stories', icon: Star },
   { href: '/customers', label: 'Customers', icon: Users },
 ];
