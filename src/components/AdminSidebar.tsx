@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import {
   LayoutDashboard,
   Package,
@@ -36,10 +37,14 @@ export function AdminSidebar() {
     <aside className="w-64 bg-zinc-950 border-r border-zinc-800 text-zinc-300 flex flex-col justify-between shrink-0 min-h-screen">
       {/* Brand Header */}
       <div className="p-6 border-b border-zinc-800/80">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center font-black text-zinc-950 text-lg">
-            F
-          </div>
+        <Link href="/" className="flex items-center gap-2.5">
+          <Image
+            src="/logo.svg"
+            alt="Fittrock"
+            width={32}
+            height={32}
+            className="w-8 h-8 object-contain"
+          />
           <div>
             <span className="font-extrabold text-lg tracking-tight text-white">
               FITT<span className="text-amber-500">ROCK</span>

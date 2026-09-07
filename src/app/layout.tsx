@@ -6,9 +6,31 @@ import { Toaster } from 'sonner';
 import { AuthProvider } from '@/lib/firebase/auth-context';
 import { AdminAuthGuard } from '@/components/AdminAuthGuard';
 
+const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'https://admin.fittrock.com';
+
 export const metadata: Metadata = {
+  metadataBase: new URL(adminUrl),
   title: 'Fittrock Admin Dashboard | Product, Sales & Review Analytics',
   description: 'Internal administrative dashboard for Fittrock Ergonomics (admin.fittrock.com).',
+  openGraph: {
+    title: 'Fittrock Admin Dashboard',
+    description: 'Internal administrative dashboard for Fittrock Ergonomics.',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Fittrock Admin Dashboard' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Fittrock Admin Dashboard',
+    images: ['/og-image.png'],
+  },
+  icons: {
+    icon: [
+      { url: '/logo.svg', type: 'image/svg+xml' },
+      { url: '/logo.png', type: 'image/png' },
+      { url: '/logo.ico', sizes: 'any' },
+    ],
+    shortcut: '/logo.ico',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({
