@@ -1,28 +1,24 @@
+'use client';
+
 import React from 'react';
-import { apiFetch } from '@/lib/api-client';
+import { useApiData } from '@/lib/use-api-data';
 import { ReviewsClient, AdminReviewItem } from './ReviewsClient';
 
-export const dynamic = 'force-dynamic';
+export default function AdminReviewsPage() {
+  const reviews = useApiData<{ reviews: AdminReviewItem[] }>('/api/admin/reviews');
+  const products = useApiData<{ products: any[] }>('/api/admin/products');
+  const loading = reviews.loading || products.loading;
 
-export default async function AdminReviewsPage() {
-  let reviewsList: AdminReviewItem[] = [];
-  let productsList: Array<{ id: string; title: string }> = [];
-
-  try {
-    const revsRes = await apiFetch<{ reviews: AdminReviewItem[] }>('/api/admin/reviews');
-    if (Array.isArray(revsRes.reviews)) {
-      reviewsList = revsRes.reviews;
-    }
-
-    const prodsRes = await apiFetch<{ products: any[] }>('/api/admin/products');
-    if (Array.isArray(prodsRes.products)) {
-      productsList = prodsRes.products.map((p) => ({
+  const reviewsList: AdminReviewItem[] = Array.isArray(reviews.data?.reviews) ? reviews.data.reviews : [];
+  const productsList: Array<{ id: string; title: string }> = Array.isArray(products.data?.products)
+    ? products.data.products.map((p) => ({
         id: p.id,
         title: p.title || p.name,
-      }));
-    }
-  } catch (err) {
-    console.error('Failed to fetch admin reviews:', err);
+      }))
+    : [];
+
+  if (loading) {
+    return <p className="text-sm text-zinc-400">Loading…</p>;
   }
 
   return (

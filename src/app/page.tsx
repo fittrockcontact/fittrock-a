@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import {
@@ -12,10 +14,8 @@ import {
   Clock,
   CheckCircle2,
 } from 'lucide-react';
-import { apiFetch } from '@/lib/api-client';
+import { useApiData } from '@/lib/use-api-data';
 import { formatPrice, formatDate } from '@/lib/utils';
-
-export const dynamic = 'force-dynamic';
 
 interface AdminStatsResponse {
   stats: {
@@ -35,24 +35,20 @@ interface AdminStatsResponse {
   };
 }
 
-export default async function AdminDashboardPage() {
-  let stats = {
+export default function AdminDashboardPage() {
+  const { data, loading } = useApiData<AdminStatsResponse>('/api/admin/stats');
+  const stats = data?.stats ?? {
     totalOrders: 0,
     totalProducts: 0,
     totalCustomers: 0,
     totalReviews: 0,
     totalRevenue: '0.00',
     aov: '0',
-    recentOrders: [] as any[],
+    recentOrders: [] as AdminStatsResponse['stats']['recentOrders'],
   };
 
-  try {
-    const res = await apiFetch<AdminStatsResponse>('/api/admin/stats');
-    if (res?.stats) {
-      stats = res.stats;
-    }
-  } catch (err) {
-    console.error('Failed to fetch admin stats:', err);
+  if (loading) {
+    return <p className="text-sm text-zinc-400">Loading…</p>;
   }
 
   const kpis = [

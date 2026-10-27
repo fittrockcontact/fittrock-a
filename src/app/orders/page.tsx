@@ -1,10 +1,10 @@
+'use client';
+
 import React from 'react';
 import { ShoppingBag, Calendar, User, CreditCard, FileText } from 'lucide-react';
-import { apiFetch } from '@/lib/api-client';
+import { useApiData } from '@/lib/use-api-data';
 import { formatPrice, formatDate } from '@/lib/utils';
 import { OrderStatusDropdown } from './OrderStatusDropdown';
-
-export const dynamic = 'force-dynamic';
 
 interface OrderItem {
   id: string;
@@ -38,16 +38,12 @@ interface OrderItem {
   }>;
 }
 
-export default async function AdminOrdersPage() {
-  let ordersList: OrderItem[] = [];
+export default function AdminOrdersPage() {
+  const { data, loading } = useApiData<{ orders: OrderItem[] }>('/api/admin/orders');
+  const ordersList: OrderItem[] = Array.isArray(data?.orders) ? data.orders : [];
 
-  try {
-    const res = await apiFetch<{ orders: OrderItem[] }>('/api/admin/orders');
-    if (Array.isArray(res.orders)) {
-      ordersList = res.orders;
-    }
-  } catch (err) {
-    console.error('Failed to fetch admin orders:', err);
+  if (loading) {
+    return <p className="text-sm text-zinc-400">Loading…</p>;
   }
 
   return (

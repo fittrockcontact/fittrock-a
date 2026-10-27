@@ -1,19 +1,15 @@
+'use client';
+
 import React from 'react';
 import { InventoryClient, InventoryVariantItem } from './InventoryClient';
-import { apiFetch } from '@/lib/api-client';
+import { useApiData } from '@/lib/use-api-data';
 
-export const dynamic = 'force-dynamic';
+export default function AdminInventoryPage() {
+  const { data, loading } = useApiData<{ inventory: InventoryVariantItem[] }>('/api/admin/inventory');
+  const inventoryList: InventoryVariantItem[] = Array.isArray(data?.inventory) ? data.inventory : [];
 
-export default async function AdminInventoryPage() {
-  let inventoryList: InventoryVariantItem[] = [];
-
-  try {
-    const res = await apiFetch<{ inventory: InventoryVariantItem[] }>('/api/admin/inventory');
-    if (Array.isArray(res.inventory)) {
-      inventoryList = res.inventory;
-    }
-  } catch (err) {
-    console.error('Failed to fetch inventory:', err);
+  if (loading) {
+    return <p className="text-sm text-zinc-400">Loading…</p>;
   }
 
   return (

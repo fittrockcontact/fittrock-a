@@ -1,3 +1,5 @@
+import { getAuthHeaders } from '@/lib/auth-fetch';
+
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
@@ -9,6 +11,7 @@ export async function apiFetch<T>(
 
   const defaultHeaders: HeadersInit = {
     'Content-Type': 'application/json',
+    ...(await getAuthHeaders()),
   };
 
   const config: RequestInit = {

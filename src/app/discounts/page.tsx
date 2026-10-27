@@ -1,19 +1,15 @@
+'use client';
+
 import React from 'react';
 import { DiscountsClient, DiscountItem } from './DiscountsClient';
-import { apiFetch } from '@/lib/api-client';
+import { useApiData } from '@/lib/use-api-data';
 
-export const dynamic = 'force-dynamic';
+export default function AdminDiscountsPage() {
+  const { data, loading } = useApiData<{ discounts: DiscountItem[] }>('/api/admin/discounts');
+  const discountsList: DiscountItem[] = Array.isArray(data?.discounts) ? data.discounts : [];
 
-export default async function AdminDiscountsPage() {
-  let discountsList: DiscountItem[] = [];
-
-  try {
-    const res = await apiFetch<{ discounts: DiscountItem[] }>('/api/admin/discounts');
-    if (Array.isArray(res.discounts)) {
-      discountsList = res.discounts;
-    }
-  } catch (err) {
-    console.error('Failed to fetch discounts:', err);
+  if (loading) {
+    return <p className="text-sm text-zinc-400">Loading…</p>;
   }
 
   return (

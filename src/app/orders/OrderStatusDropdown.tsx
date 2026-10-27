@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { Loader2, Truck, ExternalLink, Check } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { authFetch } from '@/lib/auth-fetch';
 
 export interface ShipmentInfo {
   id?: string;
@@ -58,7 +59,7 @@ export function OrderStatusDropdown({
         payload.trackingUrl = shipmentDetails.trackingUrl;
       }
 
-      const res = await fetch(
+      const res = await authFetch(
         `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/admin/orders/${orderId}/status`,
         {
           method: 'PATCH',

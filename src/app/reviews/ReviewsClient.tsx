@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { authFetch } from '@/lib/auth-fetch';
 
 export interface AdminReviewItem {
   id: string;
@@ -57,7 +58,7 @@ export function ReviewsClient({ initialReviews, productsList }: ReviewsClientPro
     if (!confirm('Are you sure you want to delete this customer review?')) return;
 
     try {
-      const res = await fetch(
+      const res = await authFetch(
         `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/admin/reviews/${id}`,
         { method: 'DELETE' }
       );
@@ -74,7 +75,7 @@ export function ReviewsClient({ initialReviews, productsList }: ReviewsClientPro
   // Handle Toggle Approval
   const handleToggleApprove = async (id: string, current: boolean) => {
     try {
-      const res = await fetch(
+      const res = await authFetch(
         `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/admin/reviews/${id}/approve`,
         {
           method: 'PATCH',
@@ -104,7 +105,7 @@ export function ReviewsClient({ initialReviews, productsList }: ReviewsClientPro
 
     setIsSubmitting(true);
     try {
-      const res = await fetch(
+      const res = await authFetch(
         `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/admin/reviews`,
         {
           method: 'POST',
