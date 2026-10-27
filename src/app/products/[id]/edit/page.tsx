@@ -17,6 +17,7 @@ import {
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { ImageUploader } from '@/components/ImageUploader';
+import { authFetch } from '@/lib/auth-fetch';
 
 interface FeatureHighlight {
   title: string;
@@ -71,7 +72,7 @@ export default function EditProductAdminPage() {
       try {
         setLoading(true);
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-        const res = await fetch(`${apiUrl}/api/admin/products/${productId}`);
+        const res = await authFetch(`${apiUrl}/api/admin/products/${productId}`);
 
         if (!res.ok) {
           throw new Error('Product not found or failed to load');
@@ -244,7 +245,7 @@ export default function EditProductAdminPage() {
           })),
       };
 
-      const res = await fetch(`${apiUrl}/api/admin/products/${productId}`, {
+      const res = await authFetch(`${apiUrl}/api/admin/products/${productId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

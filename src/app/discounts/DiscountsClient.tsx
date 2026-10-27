@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatPrice } from '@/lib/utils';
+import { authFetch } from '@/lib/auth-fetch';
 
 export interface DiscountItem {
   id: string;
@@ -73,7 +74,7 @@ export function DiscountsClient({ initialDiscounts }: Props) {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch(`${apiUrl}/api/admin/discounts`, {
+      const res = await authFetch(`${apiUrl}/api/admin/discounts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -96,7 +97,7 @@ export function DiscountsClient({ initialDiscounts }: Props) {
       toast.success(`Coupon code ${form.code.toUpperCase()} created successfully!`);
 
       // Refresh list
-      const listRes = await fetch(`${apiUrl}/api/admin/discounts`);
+      const listRes = await authFetch(`${apiUrl}/api/admin/discounts`);
       const listData = await listRes.json();
       if (Array.isArray(listData.discounts)) {
         setDiscounts(listData.discounts);
@@ -123,7 +124,7 @@ export function DiscountsClient({ initialDiscounts }: Props) {
   const handleToggleActive = async (id: string, currentStatus: boolean) => {
     setTogglingId(id);
     try {
-      const res = await fetch(`${apiUrl}/api/admin/discounts/${id}`, {
+      const res = await authFetch(`${apiUrl}/api/admin/discounts/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isActive: !currentStatus }),
@@ -148,7 +149,7 @@ export function DiscountsClient({ initialDiscounts }: Props) {
 
     setDeletingId(id);
     try {
-      const res = await fetch(`${apiUrl}/api/admin/discounts/${id}`, {
+      const res = await authFetch(`${apiUrl}/api/admin/discounts/${id}`, {
         method: 'DELETE',
       });
 

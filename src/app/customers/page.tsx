@@ -1,19 +1,15 @@
+'use client';
+
 import React from 'react';
-import { apiFetch } from '@/lib/api-client';
+import { useApiData } from '@/lib/use-api-data';
 import { CustomersClient, CustomerItem } from './CustomersClient';
 
-export const dynamic = 'force-dynamic';
+export default function AdminCustomersPage() {
+  const { data, loading } = useApiData<{ customers: CustomerItem[] }>('/api/admin/customers');
+  const customersList: CustomerItem[] = Array.isArray(data?.customers) ? data.customers : [];
 
-export default async function AdminCustomersPage() {
-  let customersList: CustomerItem[] = [];
-
-  try {
-    const res = await apiFetch<{ customers: CustomerItem[] }>('/api/admin/customers');
-    if (Array.isArray(res.customers)) {
-      customersList = res.customers;
-    }
-  } catch (err) {
-    console.error('Failed to fetch admin customers:', err);
+  if (loading) {
+    return <p className="text-sm text-zinc-400">Loading…</p>;
   }
 
   return <CustomersClient initialCustomers={customersList} />;

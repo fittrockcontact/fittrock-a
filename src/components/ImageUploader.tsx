@@ -11,6 +11,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { authFetch } from '@/lib/auth-fetch';
 
 interface ImageUploaderProps {
   value: string;
@@ -55,7 +56,7 @@ export function ImageUploader({
       formData.append('file', file);
       formData.append('folder', folder);
 
-      const res = await fetch(`${API_URL}/api/upload/image`, {
+      const res = await authFetch(`${API_URL}/api/upload/image`, {
         method: 'POST',
         body: formData,
       });

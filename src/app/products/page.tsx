@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import {
@@ -8,11 +10,9 @@ import {
   Layers,
   Sparkles,
 } from 'lucide-react';
-import { apiFetch } from '@/lib/api-client';
+import { useApiData } from '@/lib/use-api-data';
 import { formatPrice, formatDate } from '@/lib/utils';
 import { ProductTableActions } from './ProductTableActions';
-
-export const dynamic = 'force-dynamic';
 
 interface ProductItem {
   id: string;
@@ -39,16 +39,12 @@ interface ProductItem {
   }>;
 }
 
-export default async function AdminProductsPage() {
-  let productsList: ProductItem[] = [];
+export default function AdminProductsPage() {
+  const { data, loading } = useApiData<{ products: ProductItem[] }>('/api/admin/products');
+  const productsList: ProductItem[] = Array.isArray(data?.products) ? data.products : [];
 
-  try {
-    const res = await apiFetch<{ products: ProductItem[] }>('/api/admin/products');
-    if (Array.isArray(res.products)) {
-      productsList = res.products;
-    }
-  } catch (err) {
-    console.error('Failed to fetch admin products:', err);
+  if (loading) {
+    return <p className="text-sm text-zinc-400">Loading…</p>;
   }
 
   const storeUrl = process.env.NEXT_PUBLIC_STORE_URL || 'http://localhost:3000';

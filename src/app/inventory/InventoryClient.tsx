@@ -14,6 +14,7 @@ import {
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { formatPrice } from '@/lib/utils';
+import { authFetch } from '@/lib/auth-fetch';
 
 export interface InventoryVariantItem {
   id: string;
@@ -59,7 +60,7 @@ export function InventoryClient({ initialInventory }: Props) {
 
     setSavingId(id);
     try {
-      const res = await fetch(`${apiUrl}/api/admin/inventory/${id}`, {
+      const res = await authFetch(`${apiUrl}/api/admin/inventory/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ stockQuantity: newQty }),

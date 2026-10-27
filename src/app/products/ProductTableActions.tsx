@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ExternalLink, Trash2, Loader2, Edit } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { authFetch } from '@/lib/auth-fetch';
 
 interface ProductTableActionsProps {
   productId: string;
@@ -23,7 +24,7 @@ export function ProductTableActions({ productId, slug, storeUrl }: ProductTableA
 
     setIsDeleting(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/admin/products/${productId}`, {
+      const res = await authFetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/admin/products/${productId}`, {
         method: 'DELETE',
       });
 

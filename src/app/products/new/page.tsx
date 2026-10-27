@@ -17,6 +17,7 @@ import {
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { ImageUploader } from '@/components/ImageUploader';
+import { authFetch } from '@/lib/auth-fetch';
 
 interface FeatureHighlight {
   title: string;
@@ -209,7 +210,7 @@ export default function NewProductAdminPage() {
         images: formattedImages,
       };
 
-      const res = await fetch(
+      const res = await authFetch(
         `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/admin/products`,
         {
           method: 'POST',
